@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mở Hộp Quà 🎁</title>
+  <link rel="stylesheet" href="box.css" />
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="konva-box"></div>
+    <div class="click-text">🎀Nhấn vào hộp để mở</div>
+  </div>
+
+  <script>
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const stage = new Konva.Stage({
+      container: "konva-box",
+      width,
+      height,
+    });
+
+    const layer = new Konva.Layer();
+    stage.add(layer);
+
+    // 🎁 Hộp quà phần thân
+    const box = new Konva.Rect({
+      x: width / 2 - 100,
+      y: height / 2 - 70,
+      width: 200,
+      height: 120,
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: 120 },
+      fillLinearGradientColorStops: [0, "#ff3b8d", 1, "#ff6fb4"],
+      cornerRadius: 12,
+      shadowBlur: 15,
+      shadowColor: "#ffb3d9",
+    });
+
+    // 🎀 Nắp hộp
+    const lid = new Konva.Rect({
+      x: width / 2 - 110,
+      y: height / 2 - 120,
+      width: 220,
+      height: 60,
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: 60 },
+      fillLinearGradientColorStops: [0, "#ff80bf", 1, "#ff4da6"],
+      cornerRadius: 12,
+      shadowBlur: 15,
+      shadowColor: "#ffb3d9",
+    });
+
+    // 🎁 Ruy băng ngang
+    const ribbonH = new Konva.Rect({
+      x: width / 2 - 100,
+      y: height / 2 - 30,
+      width: 200,
+      height: 20,
+      fill: "#fff",
+      opacity: 0.9,
+      shadowBlur: 5,
+    });
+
+    // 🎀 Ruy băng dọc
+    const ribbonV = new Konva.Rect({
+      x: width / 2 - 10,
+      y: height / 2 - 120,
+      width: 20,
+      height: 170,
+      fill: "#fff",
+      opacity: 0.9,
+      shadowBlur: 5,
+    });
+
+    layer.add(box, lid, ribbonH, ribbonV);
+    layer.draw();
+
+    // 🌸 Hiệu ứng hoa và lá rơi
+    const flowerLayer = new Konva.Layer();
+    stage.add(flowerLayer);
+
+    const petals = [];
+    const colors = ["#ff80bf", "#ffb6c1", "#ffd1dc", "#ffe6f0", "#a8e6cf", "#dcedc1"];
+
+    function createPetal() {
+      const shapeType = Math.random() < 0.5 ? "circle" : "star";
+      let shape;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 6 + 3;
+
+      if (shapeType === "circle") {
+        shape = new Konva.Circle({
+          x: Math.random() * width,
+          y: Math.random() * -height,
+          radius: size,
+          fill: color,
+          opacity: Math.random() * 0.6 + 0.4,
+        });
+      } else {
+        shape = new Konva.Star({
+          x: Math.random() * width,
+          y: Math.random() * -height,
+          numPoints: 5,
+          innerRadius: size / 2,
+          outerRadius: size,
+          fill: color,
+          opacity: Math.random() * 0.6 + 0.4,
+          rotation: Math.random() * 360,
+        });
+      }
+
+      petals.push(shape);
+      flowerLayer.add(shape);
+    }
+
+    for (let i = 0; i < 100; i++) createPetal();
+
+    function animatePetals() {
+      petals.forEach((p) => {
+        p.y(p.y() + Math.random() * 1.5 + 0.8);
+        p.x(p.x() + Math.sin(p.y() / 40) * 1);
+        p.rotation(p.rotation() + 0.5);
+        if (p.y() > height) {
+          p.y(Math.random() * -100);
+          p.x(Math.random() * width);
+        }
+      });
+      flowerLayer.batchDraw();
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+
+    // 🌟 Animation mở hộp và chuyển trang
+    let opened = false;
+    stage.on("click tap", () => {
+      if (opened) return;
+      opened = true;
+
+      // Nắp hộp bật lên
+      new Konva.Tween({
+        node: lid,
+        duration: 1,
+        rotation: -80,
+        y: height / 2 - 200,
+        x: width / 2 - 100,
+        easing: Konva.Easings.EaseInOut,
+      }).play();
+
+      // Nhấp nháy ruy băng
+      new Konva.Tween({
+        node: ribbonV,
+        duration: 1,
+        opacity: 0,
+        easing: Konva.Easings.EaseInOut,
+      }).play();
+
+      new Konva.Tween({
+        node: ribbonH,
+        duration: 1,
+        opacity: 0,
+        easing: Konva.Easings.EaseInOut,
+      }).play();
+
+      setTimeout(() => {
+        window.location.href = "hoa.html";
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
