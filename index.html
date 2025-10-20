@@ -7,10 +7,34 @@
   <link rel="stylesheet" href="box.css" />
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
+
+ <style>
+   .click-text {
+      position: absolute;
+    
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 1.8rem;
+      color: #d41818;
+      text-shadow: 0 0 8px rgba(255, 150, 200, 0.8);
+      font-weight: bold;
+      max-width: 90%;
+      line-height: 1.4;
+      white-space: normal; /* Cho phép xuống dòng */
+    }
+       body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: url("img/hinh2.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+    }
+ </style>
 <body>
   <div class="container">
     <div id="konva-box"></div>
-    <div class="click-text">🎀Nhấn vào hộp để mở</div>
+    <div class="click-text">🎀Nhấn vào hộp để mở 🎀</div>
   </div>
 
   <script>
