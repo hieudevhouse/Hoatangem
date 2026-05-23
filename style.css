@@ -987,7 +987,7 @@ body {
 }
 .photo-gallery {
   position: absolute;
-  top: 40vmin;
+  top: 42vmin;
   left: 50%;
   transform: translateX(-50%);
   width: min(100vw, 72rem);
@@ -1061,6 +1061,11 @@ body {
   }
 }
 @media (max-width: 520px) {
+  .photo-gallery {
+    top: 52vmin;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
   .photo-card {
     width: clamp(120px, 80vw, 300px);
   }
